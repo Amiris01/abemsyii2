@@ -3,10 +3,12 @@
 namespace app\controllers;
 
 use app\models\Student;
+use Yii;
 use app\models\StudentSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * StudentController implements the CRUD actions for Student model.
@@ -68,13 +70,27 @@ class StudentController extends Controller
     public function actionCreate()
     {
         $model = new Student();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->profile_pic = UploadedFile::getInstance($model, 'profile_pic');
+            if ($model->profile_pic) {
+                $imagePath = 'uploads/' . pathinfo($model->profile_pic, PATHINFO_FILENAME) . '.' . pathinfo($model->profile_pic, PATHINFO_EXTENSION);
             }
-        } else {
-            $model->loadDefaultValues();
+            $model->profile_pic->saveAs($imagePath);
+            $model->profile_pic = $imagePath;
+            $student = new Student([
+                'userid' => $model->userid,  
+                'name' => $model->name,
+                'age' => $model->age,
+                'status' => $model->status,
+                'parent_name' => $model->parent_name,
+                'address' => $model->address,
+                'parent_contact' => $model->parent_contact,
+                'profile_pic' => $model->profile_pic,
+            ]);
+    
+            if ($student->save()) {
+                    return $this->redirect(['index']);
+            } 
         }
 
         return $this->render('create', [
@@ -92,15 +108,43 @@ class StudentController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $oldProfilePic = $model->profile_pic; // Store the old profile pic
+    
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            // Handle image upload only if a new image is uploaded
+            $model->profile_pic = UploadedFile::getInstance($model, 'profile_pic');
+    
+            if ($model->profile_pic) {
+                // Generate a unique filename based on the current timestamp
+                $imageName = Yii::$app->security->generateRandomString(10) . '_' . time() . '.' . $model->profile_pic->extension;
+    
+                // Save the image to the 'uploads' directory
+                $imagePath = 'uploads/' . $imageName;
+                $model->profile_pic->saveAs($imagePath);
+    
+                // Set the profile_pic attribute to the new image path
+                $model->profile_pic = $imagePath;
+    
+                // Delete the old profile pic if it exists and is different from the new one
+                if ($oldProfilePic && $oldProfilePic !== $imagePath) {
+                    unlink($oldProfilePic);
+                }
+            } else {
+                // If no new image was uploaded, retain the existing image path
+                $model->profile_pic = $oldProfilePic;
+            }
+    
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
-
+    
         return $this->render('update', [
             'model' => $model,
         ]);
     }
+    
+    
 
     /**
      * Deletes an existing Student model.

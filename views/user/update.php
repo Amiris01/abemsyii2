@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\User $model */
 
-$this->title = 'Kemaskini User';
+$this->title = 'Kemaskini Pengguna';
 ?>
 <div class="user-update" style="margin-top: 30px;">
 <div class="container">

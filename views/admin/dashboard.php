@@ -5,12 +5,16 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\User;
 use app\models\Student;
+use app\models\Teacher;
+
 $this->title = 'Admin Dashboard';
 $this->registerCssFile('@web/css/bootstrap.css');
 $userroute = Url::to(['/user']);
 $studentroute = Url::to(['/student']);
+$teacherroute = Url::to(['/teacher']);
 $userCount = User::find()->count();
 $studentCount = Student::find()->count();
+$teacherCount = Teacher::find()->count();
 ?>
 
 <div class="container-fluid" style="margin-top: 10px; padding-bottom:50px;">
@@ -34,7 +38,7 @@ $studentCount = Student::find()->count();
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link align-middle px-0">
+                        <a href="<?= $teacherroute ?>" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">URUS GURU</span>
                         </a>
                     </li>
@@ -84,7 +88,7 @@ $studentCount = Student::find()->count();
             <?= Html::img('@web/images/teacher.png', ['alt' => 'Image 3', 'class' => 'card-img-top mx-auto', 'style' => 'width: 100px; height: 100px; margin-top:20px;']) ?>
             <div class="card-body">
                 <h5 class="card-title">Teacher Count</h5>
-                <p class="card-text">Will be hired soon.</p>
+                <p class="card-text"><?= $teacherCount ?></p>
             </div>
         </div>
     </div>

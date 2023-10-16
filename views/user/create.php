@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\User $model */
 
-$this->title = 'Tambah User';
+$this->title = 'Tambah Pengguna';
 ?>
 <div class="user-create" style="margin-top: 30px;">
 

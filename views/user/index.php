@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /** @var app\models\UserSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'User';
+$this->title = 'Pengguna';
 ?>
 <div class="user-index" style="margin-top:30px;">
 
@@ -29,13 +29,41 @@ $this->title = 'User';
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'username',
+            [
+                'attribute' => 'id',
+                'label' => 'ID', 
+            ],
+            [
+                'attribute' => 'username',
+                'label' => 'Nama Pengguna', 
+            ],
             //'password',
             //'authKey',
             //'accessToken',
-            //'status',
-            'role',
+            [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    $statuslabels = [
+                        '10' => 'Aktif',
+                        '0' => 'Tidak Aktif',
+                    ];
+
+                    return isset($statuslabels[$model->status]) ? $statuslabels[$model->status] : ucfirst($model->status);
+                },
+            ],
+            [
+                'attribute' => 'role',
+                'label' => 'Peranan',
+                'value' => function ($model) {
+                    $roleLabels = [
+                        'admin' => 'Admin',
+                        'student' => 'Pelajar',
+                        'teacher' => 'Guru',
+                    ];
+
+                    return isset($roleLabels[$model->role]) ? $roleLabels[$model->role] : ucfirst($model->role);
+                },
+            ],
             //'created_at',
             [
                 'class' => ActionColumn::className(),

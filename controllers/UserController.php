@@ -83,8 +83,14 @@ class UserController extends Controller
             ]);
     
             if ($user->save()) {
-                return $this->redirect(['index']);
-            }
+                if ($user->role === 'student') {
+                    return $this->redirect(['student/create']);
+                } elseif ($user->role === 'teacher') {
+                    return $this->redirect(['teacher/create']);
+                } else {
+                    return $this->redirect(['index']);
+                }
+            } 
         }
     
         return $this->render('create', ['model' => $model]);

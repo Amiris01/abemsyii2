@@ -10,14 +10,14 @@ use yii\widgets\Pjax;
 /** @var app\models\StudentSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Students';
+$this->title = 'Pelajar';
 ?>
 <div class="student-index" style="margin-top:30px;">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Student', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tambah Pelajar', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -29,14 +29,39 @@ $this->title = 'Students';
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            [
+                'attribute' =>'id',
+                'label' => 'ID',
+            ],
             //'userid',
-            'name',
-            'age',
-            'status',
-            'parent_name',
+            [
+                'attribute' => 'name',
+                'label' => 'Nama',
+            ],
+            [
+                'attribute' => 'age',
+                'label' => 'Umur',
+            ],
+            [
+                'attribute' => 'status',
+                'value' => function ($model) {
+                    $statuslabels = [
+                        '10' => 'Aktif',
+                        '0' => 'Tidak Aktif',
+                    ];
+
+                    return isset($statuslabels[$model->status]) ? $statuslabels[$model->status] : ucfirst($model->status);
+                },
+            ],
+            [
+                'attribute' => 'parent_name',
+                'label' => 'Nama Penjaga',
+            ],
             //'address',
-            'parent_contact',
+            [
+                'attribute' => 'parent_contact',
+                'label' => 'No. Telefon Penjaga'
+            ],
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Student $model, $key, $index, $column) {

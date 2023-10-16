@@ -5,28 +5,27 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "student".
+ * This is the model class for table "teacher".
  *
  * @property int $id
  * @property int|null $userid
  * @property string|null $name
- * @property int|null $age
  * @property string|null $status
- * @property string|null $parent_name
- * @property string|null $address
- * @property string|null $parent_contact
+ * @property string|null $email
+ * @property string|null $contact_num
  * @property string|null $profile_pic
+ * @property string|null $created_at
  *
  * @property User $user
  */
-class Student extends \yii\db\ActiveRecord
+class Teacher extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'student';
+        return 'teacher';
     }
 
     /**
@@ -35,8 +34,9 @@ class Student extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['userid', 'age'], 'integer'],
-            [['name', 'status', 'parent_name', 'address', 'parent_contact','profile_pic'], 'string', 'max' => 255],
+            [['userid'], 'integer'],
+            [['created_at'], 'safe'],
+            [['name', 'status', 'email', 'contact_num', 'profile_pic'], 'string', 'max' => 255],
             [['userid'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['userid' => 'id']],
         ];
     }
@@ -50,12 +50,11 @@ class Student extends \yii\db\ActiveRecord
             'id' => 'ID',
             'userid' => 'Userid',
             'name' => 'Name',
-            'age' => 'Age',
             'status' => 'Status',
-            'parent_name' => 'Parent Name',
-            'address' => 'Address',
-            'parent_contact' => 'Parent Contact',
-            'profile_pic' => 'Profile Picture',
+            'email' => 'Email',
+            'contact_num' => 'Contact Num',
+            'profile_pic' => 'Profile Pic',
+            'created_at' => 'Created At',
         ];
     }
 

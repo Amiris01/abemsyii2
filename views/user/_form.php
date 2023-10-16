@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 /** @var yii\web\View $this */
 /** @var app\models\User $model */
@@ -12,34 +13,34 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'username')->textInput(['maxlength' => true, 'disabled' => !$model->isNewRecord])->label('Nama Pengguna') ?>
 
     <?php if ($model->isNewRecord) : ?>
-        <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
-    <?php else : ?>
-        <?= $form->field($model, 'password')->passwordInput(['maxlength' => true, 'readonly' => true]) ?>
+        <?= $form->field($model, 'password')->passwordInput(['maxlength' => true])->label('Kata Laluan') ?>
     <?php endif; ?>
 
     <?= $form->field($model, 'status')->dropDownList(
     [
-        '10' => 'Active',
-        '0' => 'Inactive',
+        '10' => 'Aktif',
+        '0' => 'Tidak Aktif',
     ],
-    ['prompt' => 'Select Status']
+    ['prompt' => 'Pilih Status']
 ) ?>
 
     <?= $form->field($model, 'role')->dropDownList(
     [
         'admin' => 'Admin',
-        'student' => 'Student',
-        'teacher' => 'Teacher',
+        'student' => 'Pelajar',
+        'teacher' => 'Guru',
     ],
-    ['prompt' => 'Select Role']
-) ?>
+    [
+        'prompt' => 'Pilih Peranan',
+    ]
+)->label('Peranan') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Back', ['user/index'], ['class' => 'btn btn-secondary']) ?>
+        <?= Html::submitButton('Simpan', ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Kembali', ['user/index'], ['class' => 'btn btn-secondary']) ?>
     </div>
     
     <?php ActiveForm::end(); ?>
