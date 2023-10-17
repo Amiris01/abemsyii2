@@ -12,6 +12,8 @@ $this->registerCssFile('@web/css/bootstrap.css');
 $userroute = Url::to(['/user']);
 $studentroute = Url::to(['/student']);
 $teacherroute = Url::to(['/teacher']);
+$subjectroute = Url::to(['/subject']);
+$classroute = Url::to(['/classroom']);
 $userCount = User::find()->count();
 $studentCount = Student::find()->count();
 $teacherCount = Teacher::find()->count();
@@ -19,22 +21,12 @@ $teacherCount = Teacher::find()->count();
 
 <div class="container-fluid" style="margin-top: 10px; padding-bottom:50px;">
     <div class="row flex-nowrap">
-        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0" style="height: 400px; margin-top:50px; background-color: silver;">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0" style="height: 410px; margin-top:50px; background-color: silver;">
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                     <li class="nav-item">
-                        <a href="#" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">DASHBOARD</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a href="<?= $userroute ?>" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">URUS PENGGUNA</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">URUS SUBJEK</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -45,6 +37,16 @@ $teacherCount = Teacher::find()->count();
                     <li class="nav-item">
                         <a href="<?= $studentroute ?>" class="nav-link align-middle px-0">
                             <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">URUS PELAJAR</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= $classroute ?>" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">URUS KELAS</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?= $subjectroute ?>" class="nav-link align-middle px-0">
+                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">URUS SUBJEK</span>
                         </a>
                     </li>
                     <li class="nav-item">

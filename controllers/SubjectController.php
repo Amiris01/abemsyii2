@@ -2,18 +2,18 @@
 
 namespace app\controllers;
 
-use app\models\Student;
 use Yii;
-use app\models\StudentSearch;
+use app\models\Subject;
+use app\models\SubjectSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 
 /**
- * StudentController implements the CRUD actions for Student model.
+ * SubjectController implements the CRUD actions for Subject model.
  */
-class StudentController extends Controller
+class SubjectController extends Controller
 {
     /**
      * @inheritDoc
@@ -34,13 +34,13 @@ class StudentController extends Controller
     }
 
     /**
-     * Lists all Student models.
+     * Lists all Subject models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new StudentSearch();
+        $searchModel = new SubjectSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         return $this->render('index', [
@@ -50,7 +50,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Displays a single Student model.
+     * Displays a single Subject model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -63,32 +63,29 @@ class StudentController extends Controller
     }
 
     /**
-     * Creates a new Student model.
+     * Creates a new Subject model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Student();
+        $model = new Subject();
+
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->profile_pic = UploadedFile::getInstance($model, 'profile_pic');
-            if ($model->profile_pic) {
-                $imagePath = 'uploads/' . pathinfo($model->profile_pic, PATHINFO_FILENAME) . '.' . pathinfo($model->profile_pic, PATHINFO_EXTENSION);
+            $model->image = UploadedFile::getInstance($model, 'image');
+            if ($model->image) {
+                $imagePath = 'uploads/' . pathinfo($model->image, PATHINFO_FILENAME) . '.' . pathinfo($model->image, PATHINFO_EXTENSION);
             }
-            $model->profile_pic->saveAs($imagePath);
-            $model->profile_pic = $imagePath;
-            $student = new Student([
-                'userid' => $model->userid,  
+            $model->image->saveAs($imagePath);
+            $model->image = $imagePath;
+            $subject = new Subject([
+                'teacherid' => $model->teacherid,  
                 'name' => $model->name,
-                'age' => $model->age,
-                'status' => $model->status,
-                'parent_name' => $model->parent_name,
-                'address' => $model->address,
-                'parent_contact' => $model->parent_contact,
-                'profile_pic' => $model->profile_pic,
+                'description' => $model->description,
+                'image' => $model->image,
             ]);
     
-            if ($student->save()) {
+            if ($subject->save()) {
                     return $this->redirect(['index']);
             } 
         }
@@ -99,7 +96,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Updates an existing Student model.
+     * Updates an existing Subject model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -108,40 +105,35 @@ class StudentController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $oldProfilePic = $model->profile_pic;
-
-        $attributes = Yii::$app->request->post($model->formName());
-        unset($attributes['created_at']);
+        $oldProfilePic = $model->image;
     
         if ($model->load(Yii::$app->request->post()) && $model->save()){
-            $model->profile_pic = UploadedFile::getInstance($model, 'profile_pic');
+            $model->image = UploadedFile::getInstance($model, 'image');
     
-            if ($model->profile_pic){
-                $imageName = Yii::$app->security->generateRandomString(10) . '_' . time() . '.' . $model->profile_pic->extension;
+            if ($model->image){
+                $imageName = Yii::$app->security->generateRandomString(10) . '_' . time() . '.' . $model->image->extension;
                 $imagePath = 'uploads/' . $imageName;
-                $model->profile_pic->saveAs($imagePath);
-                $model->profile_pic = $imagePath;
+                $model->image->saveAs($imagePath);
+                $model->image = $imagePath;
                 if ($oldProfilePic && $oldProfilePic !== $imagePath) {
                     unlink($oldProfilePic);
                 }
             }else{
-                $model->profile_pic = $oldProfilePic;
+                $model->image = $oldProfilePic;
             }
     
             if ($model->save()){
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
-    
+
         return $this->render('update', [
             'model' => $model,
         ]);
     }
-    
-    
 
     /**
-     * Deletes an existing Student model.
+     * Deletes an existing Subject model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -155,23 +147,18 @@ class StudentController extends Controller
     }
 
     /**
-     * Finds the Student model based on its primary key value.
+     * Finds the Subject model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Student the loaded model
+     * @return Subject the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Student::findOne(['id' => $id])) !== null) {
+        if (($model = Subject::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
-    }
-
-    public function actionDashboard()
-    {
-        return $this->render('dashboard');
     }
 }

@@ -56,10 +56,16 @@ $this->title = 'Paparan: ' . $model->username;
         ],
         [
             'attribute' => 'role',
+            'label' => 'Peranan',
             'value' => function ($model) {
-                return ucfirst($model->role);
+                $roleLabels = [
+                    'admin' => 'Admin',
+                    'student' => 'Pelajar',
+                    'teacher' => 'Guru',
+                ];
+
+                return isset($roleLabels[$model->role]) ? $roleLabels[$model->role] : ucfirst($model->role);
             },
-            'label' => 'Peranan', 
         ],
         [
             'attribute' => 'created_at',

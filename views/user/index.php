@@ -12,6 +12,7 @@ use yii\widgets\Pjax;
 
 $this->title = 'Pengguna';
 ?>
+
 <div class="user-index" style="margin-top:30px;">
 
     <h1><?= Html::encode($this->title) ?></h1>

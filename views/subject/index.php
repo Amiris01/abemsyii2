@@ -1,23 +1,23 @@
 <?php
 
-use app\models\Teacher;
+use app\models\Subject;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /** @var yii\web\View $this */
-/** @var app\models\TeacherSearch $searchModel */
+/** @var app\models\SubjectSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Guru';
+$this->title = 'Subjek';
 ?>
-<div class="teacher-index" style="margin-top:30px;">
+<div class="subject-index" style="margin-top:30px;">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Tambah Guru', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tambah Subjek', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -30,25 +30,18 @@ $this->title = 'Guru';
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            //'userid',
-            'name',
             [
-                'attribute' => 'status',
-                'value' => function ($model) {
-                    $statuslabels = [
-                        '10' => 'Aktif',
-                        '0' => 'Tidak Aktif',
-                    ];
-
-                    return isset($statuslabels[$model->status]) ? $statuslabels[$model->status] : ucfirst($model->status);
-                },
+                'attribute' => 'teacherid',
+                'value' => function($model) {
+                    return $model->teacher->name;
+                }
             ],
-            'email:email',
-            'contact_num',
-            //'profile_pic',
+            'name',
+            'description',
+            //'image',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Teacher $model, $key, $index, $column) {
+                'urlCreator' => function ($action, Subject $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                  }
             ],

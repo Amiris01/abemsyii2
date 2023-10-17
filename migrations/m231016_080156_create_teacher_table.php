@@ -23,7 +23,6 @@ class m231016_080156_create_teacher_table extends Migration
         
         $this->addColumn('teacher', 'profile_pic', $this->string()->defaultValue(null));
         $this->addForeignKey('FK_user_teacher','teacher','userid','user','id');
-        $this->addColumn('teacher', 'created_at', $this->dateTime());
     }
 
     /**

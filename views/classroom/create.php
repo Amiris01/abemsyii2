@@ -3,11 +3,11 @@
 use yii\helpers\Html;
 
 /** @var yii\web\View $this */
-/** @var app\models\Teacher $model */
+/** @var app\models\Classroom $model */
 
-$this->title = 'Kemaskini Guru';
+$this->title = 'Tambah Kelas';
 ?>
-<div class="teacher-update" style="margin-top:30px;">
+<div class="classroom-create" style="margin-top: 30px;">
 <div class="container">
         <div class="user-box" style=" max-width: 500px;
             margin: auto;

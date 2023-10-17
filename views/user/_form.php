@@ -27,6 +27,7 @@ use yii\helpers\Url;
     ['prompt' => 'Pilih Status']
 ) ?>
 
+    <?php if ($model->isNewRecord) : ?>
     <?= $form->field($model, 'role')->dropDownList(
     [
         'admin' => 'Admin',
@@ -37,6 +38,7 @@ use yii\helpers\Url;
         'prompt' => 'Pilih Peranan',
     ]
 )->label('Peranan') ?>
+    <?php endif; ?>
 
     <div class="form-group">
         <?= Html::submitButton('Simpan', ['class' => 'btn btn-success']) ?>

@@ -2,11 +2,13 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Teacher;
 use app\models\TeacherSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * TeacherController implements the CRUD actions for Teacher model.
@@ -69,12 +71,25 @@ class TeacherController extends Controller
     {
         $model = new Teacher();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $model->profile_pic = UploadedFile::getInstance($model, 'profile_pic');
+            if ($model->profile_pic) {
+                $imagePath = 'uploads/' . pathinfo($model->profile_pic, PATHINFO_FILENAME) . '.' . pathinfo($model->profile_pic, PATHINFO_EXTENSION);
             }
-        } else {
-            $model->loadDefaultValues();
+            $model->profile_pic->saveAs($imagePath);
+            $model->profile_pic = $imagePath;
+            $teacher = new Teacher([
+                'userid' => $model->userid,  
+                'name' => $model->name,
+                'status' => $model->status,
+                'email' => $model->email,
+                'contact_num' => $model->contact_num,
+                'profile_pic' => $model->profile_pic,
+            ]);
+    
+            if ($teacher->save()) {
+                    return $this->redirect(['index']);
+            } 
         }
 
         return $this->render('create', [
@@ -92,11 +107,31 @@ class TeacherController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $oldProfilePic = $model->profile_pic;
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $attributes = Yii::$app->request->post($model->formName());
+        unset($attributes['created_at']);
+    
+        if ($model->load(Yii::$app->request->post()) && $model->save()){
+            $model->profile_pic = UploadedFile::getInstance($model, 'profile_pic');
+    
+            if ($model->profile_pic){
+                $imageName = Yii::$app->security->generateRandomString(10) . '_' . time() . '.' . $model->profile_pic->extension;
+                $imagePath = 'uploads/' . $imageName;
+                $model->profile_pic->saveAs($imagePath);
+                $model->profile_pic = $imagePath;
+                if ($oldProfilePic && $oldProfilePic !== $imagePath) {
+                    unlink($oldProfilePic);
+                }
+            }else{
+                $model->profile_pic = $oldProfilePic;
+            }
+    
+            if ($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
-
+    
         return $this->render('update', [
             'model' => $model,
         ]);

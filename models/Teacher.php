@@ -14,7 +14,6 @@ use Yii;
  * @property string|null $email
  * @property string|null $contact_num
  * @property string|null $profile_pic
- * @property string|null $created_at
  *
  * @property User $user
  */
@@ -35,7 +34,6 @@ class Teacher extends \yii\db\ActiveRecord
     {
         return [
             [['userid'], 'integer'],
-            [['created_at'], 'safe'],
             [['name', 'status', 'email', 'contact_num', 'profile_pic'], 'string', 'max' => 255],
             [['userid'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['userid' => 'id']],
         ];
@@ -48,13 +46,12 @@ class Teacher extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'userid' => 'Userid',
-            'name' => 'Name',
+            'userid' => 'ID Pengguna',
+            'name' => 'Nama',
             'status' => 'Status',
-            'email' => 'Email',
-            'contact_num' => 'Contact Num',
-            'profile_pic' => 'Profile Pic',
-            'created_at' => 'Created At',
+            'email' => 'Emel',
+            'contact_num' => 'No. Telefon',
+            'profile_pic' => 'Gambar Profil',
         ];
     }
 

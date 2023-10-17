@@ -4,12 +4,12 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Teacher;
+use app\models\Subject;
 
 /**
- * TeacherSearch represents the model behind the search form of `app\models\Teacher`.
+ * SubjectSearch represents the model behind the search form of `app\models\Subject`.
  */
-class TeacherSearch extends Teacher
+class SubjectSearch extends Subject
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class TeacherSearch extends Teacher
     public function rules()
     {
         return [
-            [['id', 'userid'], 'integer'],
-            [['name', 'status', 'email', 'contact_num', 'profile_pic'], 'safe'],
+            [['id', 'teacherid'], 'integer'],
+            [['name', 'description', 'image'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class TeacherSearch extends Teacher
      */
     public function search($params)
     {
-        $query = Teacher::find();
+        $query = Subject::find();
 
         // add conditions that should always apply here
 
@@ -59,14 +59,12 @@ class TeacherSearch extends Teacher
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'userid' => $this->userid,
+            'teacherid' => $this->teacherid,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'status', $this->status])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'contact_num', $this->contact_num])
-            ->andFilterWhere(['like', 'profile_pic', $this->profile_pic]);
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'image', $this->image]);
 
         return $dataProvider;
     }
