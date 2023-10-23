@@ -147,5 +147,34 @@ class UserController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    public function actionExportCsv($username,$role)
+    {
+        $query = User::find();
+        if (!empty($username)) {
+            $query->andWhere(['like', 'name', $username]);
+        }
+        if (!empty($role)) {
+            $query->andWhere(['role' => $role]);
+        }
+    
+        $data = $query->all();
+    
+        $output = fopen('php://output', 'w');
+    
+        Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+        Yii::$app->response->headers->add('Content-Type', 'text/csv');
+        Yii::$app->response->headers->add('Content-Disposition', 'attachment; filename="users.csv"');
+    
+        fputcsv($output, ['ID', 'Nama Pengguna', 'Status', 'Peranan', 'Tarikh Ciptaan']); 
+    
+        foreach ($data as $row) {
+            $status = ($row->status == 10) ? 'Aktif' : 'Tidak Aktif';
+            fputcsv($output, [$row->id, $row->username, $status, $row->role, $row->created_at]);
+        }
+    
+        fclose($output);
+    
+        Yii::$app->end();
+    }
     
 }

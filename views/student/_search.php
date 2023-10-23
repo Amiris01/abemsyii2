@@ -9,6 +9,10 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="student-search">
+<div class="container">
+        <div class="user-box" style=" max-width: 500px;
+            margin: auto;
+            padding: 10px;">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -18,15 +22,7 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'userid') ?>
-
     <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'age') ?>
-
-    <?= $form->field($model, 'status') ?>
 
     <?php // echo $form->field($model, 'parent_name') ?>
 
@@ -34,11 +30,12 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'parent_contact') ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+    <div class="form-group text-center">
+        <?= Html::submitButton('Cari', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
+</div>
+</div>
 </div>

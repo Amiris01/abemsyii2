@@ -10,6 +10,9 @@ use yii\widgets\Pjax;
 /** @var app\models\StudentSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
+$name = $searchModel->name ?: '';
+$status = $searchModel->status ?: '';
+
 $this->title = 'Pelajar';
 ?>
 <div class="student-index" style="margin-top:30px;">
@@ -18,10 +21,17 @@ $this->title = 'Pelajar';
 
     <p>
         <?= Html::a('Tambah Pelajar', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php echo Html::a('Jana CSV', [
+    'export-csv',
+    'name' => $name,
+    'status' => $status,
+], ['class' => 'btn btn-primary']) ?>
+
     </p>
 
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

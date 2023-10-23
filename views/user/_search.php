@@ -9,6 +9,10 @@ use yii\widgets\ActiveForm;
 ?>
 
 <div class="user-search">
+<div class="container">
+        <div class="user-box" style=" max-width: 500px;
+            margin: auto;
+            padding: 10px;">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -18,27 +22,25 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
-
     <?= $form->field($model, 'username') ?>
-
-    <?= $form->field($model, 'password') ?>
-
-    <?= $form->field($model, 'authKey') ?>
-
-    <?= $form->field($model, 'accessToken') ?>
 
     <?php // echo $form->field($model, 'status') ?>
 
-    <?php // echo $form->field($model, 'role') ?>
+    <?= $form->field($model, 'role')->dropDownList([
+    'admin' => 'Admin',
+    'student' => 'Pelajar',
+    'teacher' => 'Guru',
+], ['prompt' => 'Select Role']) ?>
+
 
     <?php // echo $form->field($model, 'created_at') ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-outline-secondary']) ?>
+    <div class="form-group text-center">
+        <?= Html::submitButton('Cari', ['class' => 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
+</div>
+</div>
 </div>

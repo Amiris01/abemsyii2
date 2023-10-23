@@ -10,6 +10,9 @@ use yii\widgets\Pjax;
 /** @var app\models\UserSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
+$username = $searchModel->username ?: '';
+$role = $searchModel->role ?: '';
+
 $this->title = 'Pengguna';
 ?>
 
@@ -19,7 +22,14 @@ $this->title = 'Pengguna';
 
     <p>
         <?= Html::a('Tambah Pengguna', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php echo Html::a('Jana CSV', [
+    'export-csv',
+    'username' => $username,
+    'role' => $role,
+], ['class' => 'btn btn-primary']) ?>
     </p>
+
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

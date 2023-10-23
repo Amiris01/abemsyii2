@@ -174,4 +174,33 @@ class StudentController extends Controller
     {
         return $this->render('dashboard');
     }
+
+    public function actionExportCsv($name)
+{
+
+    $query = Student::find();
+    if (!empty($name)) {
+        $query->andWhere(['like', 'name', $name]);
+    }
+
+    $data = $query->all();
+
+    $output = fopen('php://output', 'w');
+
+    Yii::$app->response->format = \yii\web\Response::FORMAT_RAW;
+    Yii::$app->response->headers->add('Content-Type', 'text/csv');
+    Yii::$app->response->headers->add('Content-Disposition', 'attachment; filename="student.csv"');
+
+    fputcsv($output, ['ID', 'Nama Pelajar', 'Umur', 'Status', 'Nama Penjaga', 'Alamat', 'No. Telefon Penjaga']); 
+
+    foreach ($data as $row) {
+        $status = ($row->status == 10) ? 'Aktif' : 'Tidak Aktif';
+        fputcsv($output, [$row->id, $row->name, $row->age,$status,$row->parent_name, $row->address,$row->parent_contact]);
+    }
+
+    fclose($output);
+
+    Yii::$app->end();
+}
+
 }
