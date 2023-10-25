@@ -19,6 +19,7 @@ use yii\widgets\ActiveForm;
     <div class="form-group">
         <?= Html::submitButton('Simpan', ['class' => 'btn btn-success']) ?>
         <?= Html::a('Kembali', ['classroom/index'], ['class' => 'btn btn-secondary']) ?>
+        <?= Html::resetButton('Kosongkan', ['class' => 'btn btn-danger']); ?>
     </div>
 
     <?php ActiveForm::end(); ?>

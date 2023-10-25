@@ -20,7 +20,11 @@ $student = User::find()
 
 <div class="student-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+<?php $form = ActiveForm::begin([
+    'options' => ['enctype' => 'multipart/form-data'],
+    'fieldConfig' => ['options' => ['id' => 'student-form'],],
+]); ?>
+
     
     <?php if ($model->isNewRecord) : ?>
     <?= $form->field($model, 'userid')->dropDownList($student, ['prompt' => 'Pilih Pengguna'])->label('ID Pengguna') ?>
@@ -49,9 +53,10 @@ $student = User::find()
 
     <?= $form->field($model, 'parent_contact')->textInput(['maxlength' => true])->label('No. Tel. Penjaga') ?>
 
-    <div class="form-group">
+    <div class="form-group" style="margin-top: 10px;">
         <?= Html::submitButton('Simpan', ['class' => 'btn btn-success']) ?>
         <?= Html::a('Kembali', ['student/index'], ['class' => 'btn btn-secondary']) ?>
+        <?= Html::resetButton('Kosongkan', ['class' => 'btn btn-danger']); ?>
     </div>
 
     <?php ActiveForm::end(); ?>
